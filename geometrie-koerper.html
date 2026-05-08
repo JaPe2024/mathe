@@ -1,0 +1,135 @@
+﻿<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Körper | Mathe Simulationen</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="index.html"><span class="brand-mark">M</span><span>Mathe Simulationen</span></a>
+      <nav class="nav"><a href="index.html">Start</a><a href="geometrie.html">Geometrie</a></nav>
+    </header>
+    <main>
+      <section class="page-intro">
+        <p class="eyebrow">Ebene 3</p>
+        <h1>Körper</h1>
+        <p>Körper sind dreidimensionale Objekte. Wichtig sind Volumen, Oberfläche, Grundfläche, Mantelfläche und Höhe.</p>
+      </section>
+
+      <section class="band" id="bodySimulations">
+        <div class="section-heading">
+          <p class="eyebrow">Simulationen</p>
+          <h2>Körper einzeln untersuchen</h2>
+          <p>Verändere die Maße und vergleiche Volumen, Oberfläche und Form.</p>
+        </div>
+
+        <div class="solid-grid">
+          <article class="solid-card" data-solid="cube">
+            <div>
+              <h3>Würfel</h3>
+              <p>Alle Kanten sind gleich lang.</p>
+            </div>
+            <canvas width="420" height="250" aria-label="Würfel Simulation"></canvas>
+            <label class="mini-control"><span>Kante a</span><input type="range" min="1" max="12" step="1" value="5" data-param="a" /><strong>5</strong></label>
+            <p class="formula solid-result">V = a³</p>
+          </article>
+
+          <article class="solid-card" data-solid="cuboid">
+            <div>
+              <h3>Quader</h3>
+              <p>Länge, Breite und Höhe können verschieden sein.</p>
+            </div>
+            <canvas width="420" height="250" aria-label="Quader Simulation"></canvas>
+            <label class="mini-control"><span>Länge a</span><input type="range" min="1" max="12" step="1" value="7" data-param="a" /><strong>7</strong></label>
+            <label class="mini-control"><span>Breite b</span><input type="range" min="1" max="12" step="1" value="4" data-param="b" /><strong>4</strong></label>
+            <label class="mini-control"><span>Höhe c</span><input type="range" min="1" max="12" step="1" value="6" data-param="c" /><strong>6</strong></label>
+            <p class="formula solid-result">V = a · b · c</p>
+          </article>
+
+          <article class="solid-card" data-solid="prism">
+            <div>
+              <h3>Prisma</h3>
+              <p>Ein Prisma hat zwei gleiche, parallele Grundflächen.</p>
+            </div>
+            <canvas width="420" height="250" aria-label="Prisma Simulation"></canvas>
+            <label class="mini-control"><span>Grundfläche G</span><input type="range" min="5" max="80" step="5" value="30" data-param="g" /><strong>30</strong></label>
+            <label class="mini-control"><span>Höhe h</span><input type="range" min="1" max="15" step="1" value="8" data-param="h" /><strong>8</strong></label>
+            <p class="formula solid-result">V = G · h</p>
+          </article>
+
+          <article class="solid-card" data-solid="pyramid">
+            <div>
+              <h3>Pyramide</h3>
+              <p>Die Seitenflächen laufen in einer Spitze zusammen.</p>
+            </div>
+            <canvas width="420" height="250" aria-label="Pyramide Simulation"></canvas>
+            <label class="mini-control"><span>Grundfläche G</span><input type="range" min="5" max="80" step="5" value="36" data-param="g" /><strong>36</strong></label>
+            <label class="mini-control"><span>Höhe h</span><input type="range" min="1" max="15" step="1" value="9" data-param="h" /><strong>9</strong></label>
+            <p class="formula solid-result">V = G · h / 3</p>
+          </article>
+
+          <article class="solid-card" data-solid="cylinder">
+            <div>
+              <h3>Zylinder</h3>
+              <p>Ein Zylinder hat zwei kreisförmige Grundflächen.</p>
+            </div>
+            <canvas width="420" height="250" aria-label="Zylinder Simulation"></canvas>
+            <label class="mini-control"><span>Radius r</span><input type="range" min="1" max="10" step="1" value="4" data-param="r" /><strong>4</strong></label>
+            <label class="mini-control"><span>Höhe h</span><input type="range" min="1" max="15" step="1" value="8" data-param="h" /><strong>8</strong></label>
+            <p class="formula solid-result">V = πr²h</p>
+          </article>
+
+          <article class="solid-card" data-solid="cone">
+            <div>
+              <h3>Kegel</h3>
+              <p>Ein Kegel hat eine Kreisgrundfläche und eine Spitze.</p>
+            </div>
+            <canvas width="420" height="250" aria-label="Kegel Simulation"></canvas>
+            <label class="mini-control"><span>Radius r</span><input type="range" min="1" max="10" step="1" value="4" data-param="r" /><strong>4</strong></label>
+            <label class="mini-control"><span>Höhe h</span><input type="range" min="1" max="15" step="1" value="8" data-param="h" /><strong>8</strong></label>
+            <p class="formula solid-result">V = πr²h / 3</p>
+          </article>
+
+          <article class="solid-card" data-solid="sphere">
+            <div>
+              <h3>Kugel</h3>
+              <p>Alle Punkte der Oberfläche sind gleich weit vom Mittelpunkt entfernt.</p>
+            </div>
+            <canvas width="420" height="250" aria-label="Kugel Simulation"></canvas>
+            <label class="mini-control"><span>Radius r</span><input type="range" min="1" max="10" step="1" value="4" data-param="r" /><strong>4</strong></label>
+            <p class="formula solid-result">V = 4/3 · πr³</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="explain-list">
+        <article class="explain-block">
+          <h2>Grundidee</h2>
+          <p>Das Volumen beschreibt, wie viel Raum ein Körper einnimmt. Die Oberfläche beschreibt, wie groß die gesamte Außenfläche ist. Bei vielen Körpern rechnet man zuerst die Grundfläche aus und kombiniert sie dann mit der Höhe.</p>
+          <p class="formula">Volumen: Raum im Körper</p>
+          <p class="formula">Oberfläche: alle Außenflächen zusammen</p>
+        </article>
+
+        <article class="explain-block">
+          <h2>Wichtige Formeln</h2>
+          <p class="formula">Würfel: V = a³, O = 6a²</p>
+          <p class="formula">Quader: V = a · b · c, O = 2ab + 2ac + 2bc</p>
+          <p class="formula">Prisma: V = G · h, O = 2G + M</p>
+          <p class="formula">Pyramide: V = G · h / 3</p>
+          <p class="formula">Zylinder: V = πr²h, O = 2πr² + 2πrh</p>
+          <p class="formula">Kegel: V = πr²h / 3</p>
+          <p class="formula">Kugel: V = 4/3 · πr³, O = 4πr²</p>
+        </article>
+
+        <article class="explain-block">
+          <h2>So gehst du vor</h2>
+          <p>Prüfe zuerst, welcher Körper gegeben ist. Markiere dann die benötigten Längen: Kanten, Radius, Durchmesser, Höhe oder Mantellinie. Wenn ein Durchmesser gegeben ist, brauchst du für Kreisformeln meistens den Radius, also die Hälfte davon.</p>
+          <p>Bei Prismen und Zylindern gilt oft: Grundfläche mal Höhe. Bei Pyramiden und Kegeln kommt der Faktor ein Drittel dazu, weil sie bei gleicher Grundfläche und Höhe nur ein Drittel des passenden Prismas oder Zylinders ausfüllen.</p>
+        </article>
+      </section>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>
