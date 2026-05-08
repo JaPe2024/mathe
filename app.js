@@ -861,6 +861,99 @@ function initMiniSimulation() {
       ],
       calc: ([base, exp]) => `${base}^${exp} = ${base ** exp}`,
     },
+    "algebra-variablen.html": {
+      title: "Variable einsetzen",
+      intro: "Setze einen Wert für x ein und beobachte, wie aus einem Term eine Zahl wird.",
+      controls: [
+        ["a", -8, 8, 1, 3],
+        ["b", -20, 20, 1, 2],
+        ["x", -10, 10, 1, 5],
+      ],
+      calc: ([a, b, x]) => `${a}x + ${b}<br>${a} * ${x} + ${b} = ${a * x + b}`,
+    },
+    "algebra-pq-formel.html": {
+      title: "pq-Formel",
+      intro: "Die Werte p und q bestimmen, ob x^2 + px + q = 0 zwei, eine oder keine reelle Lösung hat.",
+      controls: [
+        ["p", -10, 10, 1, -5],
+        ["q", -20, 20, 1, 6],
+      ],
+      calc: ([p, q]) => {
+        const d = (p / 2) ** 2 - q;
+        if (d < 0) return `D = ${d.toFixed(2)}<br>Keine reelle Lösung`;
+        const r = Math.sqrt(d);
+        return `D = ${d.toFixed(2)}<br>x1 = ${(-p / 2 + r).toFixed(2)}<br>x2 = ${(-p / 2 - r).toFixed(2)}`;
+      },
+    },
+    "algebra-mitternachtsformel.html": {
+      title: "Mitternachtsformel",
+      intro: "Die abc-Formel löst ax^2 + bx + c = 0 auch dann, wenn vor x^2 nicht 1 steht.",
+      controls: [
+        ["a", -5, 5, 1, 1],
+        ["b", -12, 12, 1, -3],
+        ["c", -20, 20, 1, 2],
+      ],
+      calc: ([a, b, c]) => {
+        const safeA = a === 0 ? 1 : a;
+        const d = b ** 2 - 4 * safeA * c;
+        if (d < 0) return `a = ${safeA}<br>D = ${d.toFixed(2)}<br>Keine reelle Lösung`;
+        const r = Math.sqrt(d);
+        return `a = ${safeA}<br>D = ${d.toFixed(2)}<br>x1 = ${((-b + r) / (2 * safeA)).toFixed(2)}<br>x2 = ${((-b - r) / (2 * safeA)).toFixed(2)}`;
+      },
+    },
+    "algebra-gleichungssysteme.html": {
+      title: "Gleichungssystem",
+      intro: "Zwei Geraden schneiden sich in der Lösung des Gleichungssystems.",
+      controls: [
+        ["m1", -4, 4, 0.5, 1],
+        ["b1", -8, 8, 1, 2],
+        ["m2", -4, 4, 0.5, -1],
+        ["b2", -8, 8, 1, 6],
+      ],
+      calc: ([m1, b1, m2, b2]) => {
+        if (m1 === m2) return "Gleiche Steigung: kein einzelner Schnittpunkt";
+        const x = (b2 - b1) / (m1 - m2);
+        const y = m1 * x + b1;
+        return `x = ${x.toFixed(2)}<br>y = ${y.toFixed(2)}`;
+      },
+    },
+    "grundlagen-brueche.html": {
+      title: "Bruchwert",
+      intro: "Zähler geteilt durch Nenner ergibt den Dezimalwert eines Bruchs.",
+      controls: [
+        ["Zähler", 0, 20, 1, 3],
+        ["Nenner", 1, 20, 1, 4],
+      ],
+      calc: ([a, b]) => `${a}/${b} = ${(a / b).toFixed(3)}`,
+    },
+    "grundlagen-prozent.html": {
+      title: "Prozentwert",
+      intro: "Der Prozentwert ist der Anteil am Grundwert.",
+      controls: [
+        ["Grundwert G", 1, 500, 10, 200],
+        ["Prozentsatz p", 0, 100, 5, 25],
+      ],
+      calc: ([g, p]) => `W = ${g} * ${p}/100 = ${(g * p / 100).toFixed(2)}`,
+    },
+    "grundlagen-negative-zahlen.html": {
+      title: "Vorzeichenrechnung",
+      intro: "Beim Multiplizieren entscheidet die Kombination der Vorzeichen über plus oder minus.",
+      controls: [
+        ["a", -12, 12, 1, -4],
+        ["b", -12, 12, 1, 3],
+      ],
+      calc: ([a, b]) => `${a} * ${b} = ${a * b}<br>|${a}| = ${Math.abs(a)}`,
+    },
+    "grundlagen-dreisatz.html": {
+      title: "Direkter Dreisatz",
+      intro: "Erst auf eine Einheit rechnen, dann auf die gesuchte Menge.",
+      controls: [
+        ["Menge", 1, 20, 1, 4],
+        ["Wert", 1, 100, 1, 12],
+        ["Zielmenge", 1, 50, 1, 10],
+      ],
+      calc: ([amount, value, target]) => `1 Einheit = ${(value / amount).toFixed(2)}<br>${target} Einheiten = ${(value / amount * target).toFixed(2)}`,
+    },
     "funktionen.html": {
       title: "Lineare Funktion",
       intro: "Steigung und y-Achsenabschnitt bestimmen die Gerade.",
@@ -1103,6 +1196,13 @@ function initMiniSimulation() {
     if (page.includes("vektoren-skalarprodukt")) return "a · b = 0 ⇒ a ⊥ b";
     if (page.includes("vektoren")) return "|v| = √(x² + y² + z²)";
     if (page.includes("zins") || page.includes("wachstum") || page.includes("finanz")) return "Kₙ = K₀ · (1 + p/100)ⁿ";
+    if (page.includes("pq-formel")) return "x₁,₂ = -p/2 ± √((p/2)² - q)";
+    if (page.includes("mitternachtsformel")) return "x₁,₂ = (-b ± √(b² - 4ac)) / 2a";
+    if (page.includes("gleichungssysteme")) return "Schnittpunkt: m₁x+b₁ = m₂x+b₂";
+    if (page.includes("prozent")) return "W = G · p / 100";
+    if (page.includes("brueche")) return "a/b";
+    if (page.includes("negative")) return "|x| = Abstand zu 0";
+    if (page.includes("dreisatz")) return "erst auf 1, dann auf Ziel";
     if (page.includes("exponentiell")) return "f(x) = a · qˣ";
     if (page.includes("quadratische")) return "f(x) = a(x - d)² + e";
     if (page.includes("lineare") || page.includes("funktionen")) return "f(x) = mx + b";
@@ -1359,6 +1459,51 @@ function initMiniSimulation() {
       drawSphereShape(348 * s, 204, 38 * s, "Kugel", "V=4/3*pi*r^3", colors.green);
       label("h", 126 * s, 210, colors.red);
       label("r", 76 * s, 172, colors.red);
+    } else if (page.includes("pq-formel")) {
+      axes();
+      const [p, q] = values;
+      plot((x) => x ** 2 + p * x + q, colors.teal, -6, 6);
+      const d = (p / 2) ** 2 - q;
+      if (d >= 0) {
+        const r = Math.sqrt(d);
+        [-p / 2 + r, -p / 2 - r].forEach((root) => {
+          ctx.fillStyle = colors.red;
+          ctx.beginPath();
+          ctx.arc(sx(root), sy(0), 5, 0, Math.PI * 2);
+          ctx.fill();
+        });
+      }
+      label("x²+px+q", right - 92, top + 20, colors.teal);
+    } else if (page.includes("mitternachtsformel")) {
+      axes();
+      const [a, b, c] = values;
+      const safeA = a === 0 ? 1 : a;
+      plot((x) => safeA * x ** 2 + b * x + c, colors.teal, -6, 6);
+      const d = b ** 2 - 4 * safeA * c;
+      if (d >= 0) {
+        const r = Math.sqrt(d);
+        [(-b + r) / (2 * safeA), (-b - r) / (2 * safeA)].forEach((root) => {
+          ctx.fillStyle = colors.red;
+          ctx.beginPath();
+          ctx.arc(sx(root), sy(0), 5, 0, Math.PI * 2);
+          ctx.fill();
+        });
+      }
+      label("ax²+bx+c", right - 92, top + 20, colors.teal);
+    } else if (page.includes("gleichungssysteme")) {
+      axes();
+      const [m1, b1, m2, b2] = values;
+      plot((x) => m1 * x + b1, colors.teal);
+      plot((x) => m2 * x + b2, colors.red);
+      if (m1 !== m2) {
+        const x = (b2 - b1) / (m1 - m2);
+        const y = m1 * x + b1;
+        ctx.fillStyle = colors.amber;
+        ctx.beginPath();
+        ctx.arc(sx(x), sy(y), 6, 0, Math.PI * 2);
+        ctx.fill();
+        label("S", sx(x) + 8, sy(y) - 8, colors.amber);
+      }
     } else if (page.includes("quadratische") || page.includes("kurvendiskussion")) {
       axes();
       const [a, d, e] = values;
@@ -1490,6 +1635,35 @@ function initMiniSimulation() {
       const maxY = start * (1 + rate) ** steps;
       plot((x) => ((start * (1 + rate) ** (x + 6)) / maxY) * 5, colors.teal, -6, 6);
       label("Kₙ", right - 42, top + 20, colors.teal);
+    } else if (page.includes("brueche")) {
+      const [a, b] = values;
+      drawBars([
+        { label: "Zähler", value: a, color: colors.teal },
+        { label: "Nenner", value: b, color: colors.amber },
+      ]);
+    } else if (page.includes("prozent")) {
+      const [g, p] = values;
+      drawBars([
+        { label: "G", value: g, color: colors.amber },
+        { label: "W", value: g * p / 100, color: colors.teal },
+      ]);
+    } else if (page.includes("negative")) {
+      axes();
+      const [a, b] = values;
+      ctx.strokeStyle = colors.teal;
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.moveTo(sx(0), sy(0));
+      ctx.lineTo(sx(a / 2), sy(0));
+      ctx.stroke();
+      label(String(a), sx(a / 2), sy(0) - 14, colors.teal);
+      label(`${a} * ${b} = ${a * b}`, left, top + 24, colors.red);
+    } else if (page.includes("dreisatz")) {
+      const [amount, value, target] = values;
+      drawBars([
+        { label: String(amount), value, color: colors.teal },
+        { label: String(target), value: value / amount * target, color: colors.red },
+      ]);
     } else if (page.includes("potenzen")) {
       const [base, exp] = values;
       drawBars(Array.from({ length: exp + 1 }, (_, i) => ({ label: String(i), value: base ** i, color: colors.teal })));
@@ -1513,9 +1687,17 @@ function initMiniSimulation() {
   }
 
   const topicPages = new Set([
+    "grundlagen-brueche.html",
+    "grundlagen-prozent.html",
+    "grundlagen-negative-zahlen.html",
+    "grundlagen-dreisatz.html",
+    "algebra-variablen.html",
     "algebra-gleichungen.html",
     "algebra-terme.html",
     "algebra-potenzen.html",
+    "algebra-gleichungssysteme.html",
+    "algebra-pq-formel.html",
+    "algebra-mitternachtsformel.html",
     "funktionen-lineare.html",
     "funktionen-quadratische.html",
     "funktionen-exponentiell.html",
