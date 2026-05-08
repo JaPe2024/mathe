@@ -1,13 +1,87 @@
 <!doctype html>
 <html lang="de">
-  <head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>Dreisatz | Mathe Simulationen</title><link rel="stylesheet" href="styles.css" /></head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dreisatz | Mathe Simulationen</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
   <body>
-    <header class="topbar"><a class="brand" href="index.html"><span class="brand-mark">M</span><span>Mathe Simulationen</span></a><nav class="nav"><a href="index.html">Start</a><a href="grundlagen.html">Grundlagen</a></nav></header>
+    <header class="topbar">
+      <a class="brand" href="index.html"><span class="brand-mark">M</span><span>Mathe Simulationen</span></a>
+      <nav class="nav"><a href="index.html">Start</a><a href="grundlagen.html">Grundlagen</a></nav>
+    </header>
     <main>
-      <section class="page-intro"><p class="eyebrow">Ab Klasse 6</p><h1>Dreisatz</h1><p>Mit dem Dreisatz rechnest du von einem bekannten Verhältnis auf einen gesuchten Wert.</p></section>
+      <section class="page-intro">
+        <p class="eyebrow">Ab Klasse 6</p>
+        <h1>Dreisatz</h1>
+        <p>Mit dem Dreisatz rechnest du von einem bekannten Verhältnis auf einen gesuchten Wert: erst auf 1 Einheit, dann auf die Zielmenge.</p>
+      </section>
+
       <section class="explain-list">
-        <article class="explain-block"><h2>Direkte Zuordnung</h2><p class="formula">x = Zielmenge * Wert pro 1 Einheit</p><dl class="variable-list"><dt>x</dt><dd>Gesuchter Wert.</dd><dt>Wert pro 1 Einheit</dt><dd>Zwischenschritt: Erst auf 1 herunterrechnen, dann auf die Zielmenge hochrechnen.</dd></dl><p>Mehr Menge bedeutet mehr Preis, mehr Gewicht oder mehr Strecke.</p></article>
-        <article class="explain-block"><h2>Indirekte Zuordnung</h2><p class="formula">mehr Arbeiter -> weniger Zeit</p><p>Bei indirekter Zuordnung wirkt die Veränderung entgegengesetzt. Wenn doppelt so viele Personen gleich schnell arbeiten, braucht man halb so viel Zeit.</p></article>
+        <article class="explain-block">
+          <h2>Die klassische Dreisatz-Grafik</h2>
+          <div class="dreisatz-board" aria-label="Dreisatz Schema">
+            <div class="dreisatz-row dreisatz-head">
+              <span>Menge</span>
+              <span>Wert</span>
+              <span>Rechenschritt</span>
+            </div>
+            <div class="dreisatz-row">
+              <span class="fill-box">4 kg</span>
+              <span class="fill-box">12 Euro</span>
+              <span class="step-note">gegeben</span>
+            </div>
+            <div class="dreisatz-arrow">: 4</div>
+            <div class="dreisatz-row">
+              <span class="fill-box">1 kg</span>
+              <span class="fill-box">3 Euro</span>
+              <span class="step-note">auf 1 Einheit</span>
+            </div>
+            <div class="dreisatz-arrow">* 10</div>
+            <div class="dreisatz-row">
+              <span class="fill-box accent">10 kg</span>
+              <span class="fill-box accent">30 Euro</span>
+              <span class="step-note">gesucht</span>
+            </div>
+          </div>
+          <p>Die Pfeile zeigen, was auf beiden Seiten passieren muss. Wenn du links durch 4 teilst, teilst du rechts auch durch 4. Wenn du danach links mit 10 multiplizierst, multiplizierst du rechts auch mit 10.</p>
+        </article>
+
+        <article class="explain-block">
+          <h2>Zum Ausfüllen</h2>
+          <div class="dreisatz-board blank" aria-label="Dreisatz Vorlage zum Ausfüllen">
+            <div class="dreisatz-row dreisatz-head">
+              <span>Menge</span>
+              <span>Wert</span>
+              <span>Rechenschritt</span>
+            </div>
+            <div class="dreisatz-row">
+              <span class="fill-box empty"></span>
+              <span class="fill-box empty"></span>
+              <span class="step-note">gegeben</span>
+            </div>
+            <div class="dreisatz-arrow">: ___</div>
+            <div class="dreisatz-row">
+              <span class="fill-box empty">1</span>
+              <span class="fill-box empty"></span>
+              <span class="step-note">auf 1 Einheit</span>
+            </div>
+            <div class="dreisatz-arrow">* ___</div>
+            <div class="dreisatz-row">
+              <span class="fill-box empty"></span>
+              <span class="fill-box empty"></span>
+              <span class="step-note">gesucht</span>
+            </div>
+          </div>
+          <p>Dieses Schema passt für direkte Zuordnungen: mehr Menge bedeutet mehr Wert, weniger Menge bedeutet weniger Wert.</p>
+        </article>
+
+        <article class="explain-block">
+          <h2>Indirekte Zuordnung</h2>
+          <p class="formula">mehr Arbeiter -> weniger Zeit</p>
+          <p>Bei indirekter Zuordnung läuft der zweite Wert entgegengesetzt. Wenn doppelt so viele Personen gleich schnell arbeiten, braucht man halb so viel Zeit.</p>
+        </article>
       </section>
     </main>
     <script src="app.js"></script>

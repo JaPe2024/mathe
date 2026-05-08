@@ -1690,7 +1690,6 @@ function initMiniSimulation() {
     "grundlagen-brueche.html",
     "grundlagen-prozent.html",
     "grundlagen-negative-zahlen.html",
-    "grundlagen-dreisatz.html",
     "algebra-variablen.html",
     "algebra-gleichungen.html",
     "algebra-terme.html",
