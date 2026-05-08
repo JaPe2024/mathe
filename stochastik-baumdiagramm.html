@@ -1,1 +1,46 @@
-﻿<!doctype html><html lang="de"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>Baumdiagramme | Mathe Simulationen</title><link rel="stylesheet" href="styles.css" /></head><body><header class="topbar"><a class="brand" href="index.html"><span class="brand-mark">M</span><span>Mathe Simulationen</span></a><nav class="nav"><a href="index.html">Start</a><a href="stochastik.html">Stochastik</a></nav></header><main><section class="page-intro"><p class="eyebrow">Ebene 3</p><h1>Baumdiagramme</h1><p>Baumdiagramme zeigen mehrstufige Zufallsexperimente.</p></section><section class="explain-list"><article class="explain-block"><h2>Pfadregeln</h2><p>Entlang eines Pfades werden Wahrscheinlichkeiten multipliziert. Mehrere passende Pfade werden addiert.</p><p class="formula">P(Pfad) = P(1. Ast) * P(2. Ast) * ...</p></article></section></main><script src="app.js"></script></body></html>
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Baumdiagramme | Mathe Simulationen</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="index.html"><span class="brand-mark">M</span><span>Mathe Simulationen</span></a>
+      <nav class="nav"><a href="index.html">Start</a><a href="stochastik.html">Stochastik</a></nav>
+    </header>
+    <main>
+      <section class="page-intro">
+        <p class="eyebrow">Ebene 3</p>
+        <h1>Baumdiagramme</h1>
+        <p>Baumdiagramme ordnen mehrstufige Zufallsexperimente: Jeder Ast steht für eine Entscheidung oder ein Ergebnis, jeder vollständige Weg für einen möglichen Ausgang.</p>
+      </section>
+
+      <section class="explain-list">
+        <article class="explain-block">
+          <h2>So liest du ein Baumdiagramm</h2>
+          <p>Du startest links und gehst Schritt für Schritt nach rechts. An jedem Knoten müssen die ausgehenden Wahrscheinlichkeiten zusammen 100 % ergeben. Bei der zweiten Stufe stehen oft bedingte Wahrscheinlichkeiten, zum Beispiel P(B | A): die Wahrscheinlichkeit für B, nachdem A schon eingetreten ist.</p>
+          <p class="formula">P(A und B) = P(A) * P(B | A)</p>
+        </article>
+
+        <article class="explain-block">
+          <h2>Pfadregel und Summenregel</h2>
+          <p>Für einen konkreten Ausgang folgst du genau einem Pfad und multiplizierst die Astwahrscheinlichkeiten. Wenn ein Ereignis über mehrere Pfade erreicht werden kann, berechnest du zuerst jeden passenden Pfad und addierst die Ergebnisse danach.</p>
+          <p class="formula">P(B) = P(A und B) + P(nicht A und B)</p>
+        </article>
+
+        <article class="explain-block">
+          <h2>Typische Fehler</h2>
+          <ul class="explain-points">
+            <li>Nicht alle Wahrscheinlichkeiten gehören zum gleichen Knoten. Addiert wird nur bei Alternativen, die sich gegenseitig ausschließen.</li>
+            <li>P(B | A) ist nicht automatisch dasselbe wie P(B | nicht A). Die zweite Stufe kann je nach erstem Ergebnis andere Werte haben.</li>
+            <li>Prozentwerte vor dem Rechnen in Dezimalzahlen umwandeln oder am Ende sauber wieder in Prozent angeben.</li>
+          </ul>
+        </article>
+      </section>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>

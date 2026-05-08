@@ -1,1 +1,37 @@
-﻿<!doctype html><html lang="de"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>Erwartungswert | Mathe Simulationen</title><link rel="stylesheet" href="styles.css" /></head><body><header class="topbar"><a class="brand" href="index.html"><span class="brand-mark">M</span><span>Mathe Simulationen</span></a><nav class="nav"><a href="index.html">Start</a><a href="stochastik.html">Stochastik</a></nav></header><main><section class="page-intro"><p class="eyebrow">Ebene 3</p><h1>Erwartungswert</h1><p>Der Erwartungswert ist der langfristige Durchschnitt eines Zufallsexperiments.</p></section><section class="explain-list"><article class="explain-block"><h2>Formel</h2><p class="formula">E(X) = x1 * P(x1) + x2 * P(x2) + ...</p><p>Er ist nicht immer ein Ergebnis, das wirklich auftreten kann.</p></article></section></main><script src="app.js"></script></body></html>
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Erwartungswert | Mathe Simulationen</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="index.html"><span class="brand-mark">M</span><span>Mathe Simulationen</span></a>
+      <nav class="nav"><a href="index.html">Start</a><a href="stochastik.html">Stochastik</a></nav>
+    </header>
+    <main>
+      <section class="page-intro">
+        <p class="eyebrow">Ebene 3</p>
+        <h1>Erwartungswert</h1>
+        <p>Der Erwartungswert ist der durchschnittliche Wert, den du bei sehr vielen Wiederholungen eines Zufallsexperiments langfristig erwarten würdest.</p>
+      </section>
+
+      <section class="explain-list">
+        <article class="explain-block">
+          <h2>Gewichteter Durchschnitt</h2>
+          <p>Jeder mögliche Wert wird mit seiner Wahrscheinlichkeit gewichtet. Häufige Ergebnisse zählen stärker als seltene. Danach addierst du alle gewichteten Werte.</p>
+          <p class="formula">E(X) = x1 * P(x1) + x2 * P(x2) + ...</p>
+        </article>
+
+        <article class="explain-block">
+          <h2>Bedeutung bei Spielen</h2>
+          <p>Bei einem Glücksspiel ziehst du den Einsatz vom erwarteten Gewinn ab. Ist der Erwartungswert positiv, wäre das Spiel langfristig günstig für dich. Ist er negativ, verliert man im Durchschnitt pro Spiel Geld.</p>
+          <p class="formula">fair: E(X) = 0</p>
+        </article>
+      </section>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>

@@ -975,7 +975,7 @@ function initMiniSimulation() {
     },
     "stochastik.html": {
       title: "Laplace-Wahrscheinlichkeit",
-      intro: "Wahrscheinlichkeit ist günstige durch mögliche Faelle.",
+      intro: "Bei gleich wahrscheinlichen Ergebnissen ist Wahrscheinlichkeit der Anteil der passenden Ergebnisse.",
       controls: [
         ["günstige", 1, 20, 1, 2],
         ["mögliche", 1, 20, 1, 6],
@@ -989,13 +989,19 @@ function initMiniSimulation() {
       calc: ([limit]) => `P(Zahl <= ${limit}) = ${limit}/6 = ${(limit / 6 * 100).toFixed(1)} %`,
     },
     "stochastik-baumdiagramm.html": {
-      title: "Zweistufiges Experiment",
-      intro: "Entlang eines Pfades werden Wahrscheinlichkeiten multipliziert.",
+      title: "Zweistufiges Baumdiagramm",
+      intro: "Vergleiche zwei Pfade: Erst A oder nicht A, danach jeweils B. Einzelne Pfade werden multipliziert, passende Pfade werden addiert.",
       controls: [
         ["P(A) in %", 0, 100, 5, 60],
-        ["P(B nach A) in %", 0, 100, 5, 50],
+        ["P(B | A) in %", 0, 100, 5, 50],
+        ["P(B | nicht A) in %", 0, 100, 5, 20],
       ],
-      calc: ([p1, p2]) => `P(A und B) = ${(p1 / 100 * p2 / 100 * 100).toFixed(1)} %`,
+      calc: ([pA, pBgivenA, pBgivenNotA]) => {
+        const pNotA = 100 - pA;
+        const pathAB = (pA / 100) * (pBgivenA / 100) * 100;
+        const pathNotAB = (pNotA / 100) * (pBgivenNotA / 100) * 100;
+        return `P(A und B) = ${pathAB.toFixed(1)} %<br>P(nicht A und B) = ${pathNotAB.toFixed(1)} %<br>P(B) = ${(pathAB + pathNotAB).toFixed(1)} %`;
+      },
     },
     "stochastik-erwartungswert.html": {
       title: "Erwartungswert-Spiel",
@@ -1092,6 +1098,7 @@ function initMiniSimulation() {
     if (page.includes("ableitung") || page === "analysis.html") return "f′(x) = 2x";
     if (page.includes("integral")) return "∫₀ᵇ x² dx = b³/3";
     if (page.includes("kurvendiskussion")) return "f′(x)=0 ⇒ Extremstelle";
+    if (page.includes("baumdiagramm")) return "P(B) = P(A) * P(B|A) + P(nicht A) * P(B|nicht A)";
     if (page.includes("stochastik")) return "P(E) = günstige / mögliche Fälle";
     if (page.includes("vektoren-skalarprodukt")) return "a · b = 0 ⇒ a ⊥ b";
     if (page.includes("vektoren")) return "|v| = √(x² + y² + z²)";
@@ -1415,18 +1422,41 @@ function initMiniSimulation() {
       ctx.stroke();
       label("f′", sx(x0) + 10, sy(y0) - 10, colors.red);
     } else if (page.includes("stochastik-baumdiagramm")) {
-      const [p1, p2] = values;
+      const [pA, pBgivenA, pBgivenNotA] = values;
+      const pNotA = 100 - pA;
+      const pNotBgivenA = 100 - pBgivenA;
+      const pNotBgivenNotA = 100 - pBgivenNotA;
+      const firstX = midX - 70;
+      const secondX = right - 70;
+      const startX = left + 52;
+      const aY = top + 72;
+      const notAY = bottom - 72;
+      const endYs = [top + 28, top + 116, bottom - 116, bottom - 28];
       label("Start", left, midY);
-      label(`A ${p1}%`, midX - 40, top + 54, colors.teal);
-      label(`B ${p2}%`, right - 90, top + 30, colors.red);
+      label(`A ${pA}%`, firstX - 42, top + 44, colors.teal);
+      label(`nicht A ${pNotA}%`, firstX - 74, bottom - 42, colors.amber);
+      label(`B ${pBgivenA}%`, secondX - 58, top + 26, colors.red);
+      label(`nicht B ${pNotBgivenA}%`, secondX - 82, top + 116, colors.red);
+      label(`B ${pBgivenNotA}%`, secondX - 58, bottom - 118, colors.red);
+      label(`nicht B ${pNotBgivenNotA}%`, secondX - 82, bottom - 28, colors.red);
       ctx.strokeStyle = colors.teal;
       ctx.lineWidth = 3;
       ctx.beginPath();
-      ctx.moveTo(left + 52, midY - 5);
-      ctx.lineTo(midX, top + 50);
-      ctx.lineTo(right - 50, top + 28);
-      ctx.moveTo(left + 52, midY + 5);
-      ctx.lineTo(midX, bottom - 50);
+      ctx.moveTo(startX, midY - 5);
+      ctx.lineTo(firstX, aY);
+      ctx.moveTo(startX, midY + 5);
+      ctx.lineTo(firstX, notAY);
+      ctx.stroke();
+      ctx.strokeStyle = colors.red;
+      ctx.beginPath();
+      ctx.moveTo(firstX, aY);
+      ctx.lineTo(secondX, endYs[0]);
+      ctx.moveTo(firstX, aY);
+      ctx.lineTo(secondX, endYs[1]);
+      ctx.moveTo(firstX, notAY);
+      ctx.lineTo(secondX, endYs[2]);
+      ctx.moveTo(firstX, notAY);
+      ctx.lineTo(secondX, endYs[3]);
       ctx.stroke();
     } else if (page.includes("stochastik")) {
       const first = values[0];
