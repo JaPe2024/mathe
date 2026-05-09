@@ -819,6 +819,68 @@ function initBodySimulations() {
   });
 }
 
+function initDreisatzFillSimulation() {
+  const board = document.querySelector(".dreisatz-board.blank");
+  if (!board) return;
+
+  board.classList.add("interactive");
+  board.innerHTML = `
+    <div class="dreisatz-row dreisatz-head">
+      <span>Menge</span>
+      <span>Wert</span>
+      <span>Rechenschritt</span>
+    </div>
+    <div class="dreisatz-row">
+      <label class="fill-input"><span class="sr-only">Gegebene Menge</span><input id="dreisatzAmount" type="number" min="1" value="4"><small>Einheiten</small></label>
+      <label class="fill-input"><span class="sr-only">Gegebener Wert</span><input id="dreisatzValue" type="number" min="0.01" step="0.01" value="12"><small>Euro</small></label>
+      <span class="step-note">gegeben</span>
+    </div>
+    <div class="dreisatz-arrow" id="dreisatzDivide">: 4</div>
+    <div class="dreisatz-row">
+      <span class="fill-box">1 Einheit</span>
+      <span class="fill-box" id="dreisatzUnit">3 Euro</span>
+      <span class="step-note">auf 1 Einheit</span>
+    </div>
+    <div class="dreisatz-arrow" id="dreisatzMultiply">· 10</div>
+    <div class="dreisatz-row">
+      <label class="fill-input accent"><span class="sr-only">Zielmenge</span><input id="dreisatzTarget" type="number" min="1" value="10"><small>Einheiten</small></label>
+      <span class="fill-box accent" id="dreisatzResult">30 Euro</span>
+      <span class="step-note">gesucht</span>
+    </div>
+    <p class="dreisatz-live" aria-live="polite"></p>
+  `;
+
+  const amountInput = board.querySelector("#dreisatzAmount");
+  const valueInput = board.querySelector("#dreisatzValue");
+  const targetInput = board.querySelector("#dreisatzTarget");
+  const divide = board.querySelector("#dreisatzDivide");
+  const multiply = board.querySelector("#dreisatzMultiply");
+  const unit = board.querySelector("#dreisatzUnit");
+  const result = board.querySelector("#dreisatzResult");
+  const live = board.querySelector(".dreisatz-live");
+
+  function formatNumber(number) {
+    return Number(number.toFixed(2)).toLocaleString("de-DE");
+  }
+
+  function update() {
+    const amount = Math.max(1, Number(amountInput.value) || 1);
+    const value = Math.max(0, Number(valueInput.value) || 0);
+    const target = Math.max(1, Number(targetInput.value) || 1);
+    const unitValue = value / amount;
+    const targetValue = unitValue * target;
+
+    divide.textContent = `: ${formatNumber(amount)}`;
+    multiply.textContent = `· ${formatNumber(target)}`;
+    unit.textContent = `${formatNumber(unitValue)} Euro`;
+    result.textContent = `${formatNumber(targetValue)} Euro`;
+    live.textContent = `${formatNumber(amount)} Einheiten kosten ${formatNumber(value)} Euro. Eine Einheit kostet ${formatNumber(unitValue)} Euro. ${formatNumber(target)} Einheiten kosten ${formatNumber(targetValue)} Euro.`;
+  }
+
+  [amountInput, valueInput, targetInput].forEach((input) => input.addEventListener("input", update));
+  update();
+}
+
 function formatMathText(value) {
   return String(value)
     .replace(/\^2/g, "²")
@@ -852,6 +914,7 @@ function steppedRandom(min, max, step) {
 
 function initMiniSimulation() {
   const page = window.location.pathname.split("/").pop() || "index.html";
+  if (page === "grundlagen-dreisatz.html") return;
   const configs = window.simulationConfigs || {};
 
   function formulaAnchor() {
@@ -1649,4 +1712,5 @@ initUnitCircle();
 initSineUnitCircle();
 initDerivative();
 initBodySimulations();
+initDreisatzFillSimulation();
 initMiniSimulation();

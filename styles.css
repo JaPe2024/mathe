@@ -646,6 +646,40 @@ select {
   color: var(--muted);
 }
 
+.fill-input {
+  min-height: 46px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: center;
+  padding: 7px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+}
+
+.fill-input.accent {
+  border-color: rgba(20, 137, 145, 0.35);
+  background: #eef8f9;
+}
+
+.fill-input input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+  font-weight: 850;
+  outline: none;
+}
+
+.fill-input small {
+  color: var(--muted);
+  font-weight: 750;
+}
+
 .step-note {
   color: var(--muted);
   font-size: 0.95rem;
@@ -660,6 +694,21 @@ select {
   color: #fff;
   font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
   font-weight: 900;
+}
+
+.dreisatz-live {
+  margin: 6px 0 0;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
 }
 
 .mini-sim-panel {
