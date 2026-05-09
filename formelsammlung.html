@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="de">
   <head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>Formelsammlung | Mathe Simulationen</title><link rel="stylesheet" href="styles.css" /></head>
   <body>
@@ -6,12 +6,18 @@
     <main>
       <section class="page-intro"><p class="eyebrow">Überblick</p><h1>Formelsammlung</h1><p>Die wichtigsten Lösungsformeln mit kurzer Erklärung der Variablen.</p></section>
       <section class="explain-list">
-        <article class="explain-block"><h2>Lineare Gleichung</h2><p class="formula">ax + b = c -> x = (c - b) / a</p><p>a ist der Faktor vor x, b ist die addierte Zahl, c ist die rechte Seite.</p></article>
-        <article class="explain-block"><h2>Quadratische Gleichungen</h2><p class="formula">pq: x1,2 = -p/2 +/- Wurzel((p/2)^2 - q)<br>abc: x1,2 = (-b +/- Wurzel(b^2 - 4ac)) / (2a)</p><p>Die pq-Formel passt zu x^2 + px + q = 0. Die abc-Formel passt zu ax^2 + bx + c = 0.</p></article>
-        <article class="explain-block"><h2>Geometrie</h2><p class="formula">Rechteck: A = a * b<br>Dreieck: A = g * h / 2<br>Kreis: U = 2 * pi * r, A = pi * r^2<br>Pythagoras: a^2 + b^2 = c^2</p><p>A ist Fläche, U ist Umfang, r ist Radius, g ist Grundseite, h ist Höhe.</p></article>
-        <article class="explain-block"><h2>Prozent und Zinsen</h2><p class="formula">W = G * p / 100<br>Z = K * p / 100<br>K_n = K_0 * (1 + p/100)^n</p><p>G ist Grundwert, W Prozentwert, K Kapital, p Prozentsatz, n Anzahl der Jahre oder Schritte.</p></article>
+        <article class="explain-block" id="algebra-gleichungen"><span id="algebra-variablen"></span><span id="algebra-terme"></span><span id="algebra-potenzen"></span><span id="algebra-gleichungssysteme"></span><h2>Lineare Gleichung</h2><p class="formula">ax + b = c → x = (c - b) / a<br>aᵐ · aⁿ = aᵐ⁺ⁿ<br>Schnittpunkt: m₁x + b₁ = m₂x + b₂</p><p>a ist der Faktor vor x, b ist die addierte Zahl, c ist die rechte Seite.</p></article>
+        <article class="explain-block" id="algebra-pq-formel"><span id="algebra-mitternachtsformel"></span><span id="funktionen-quadratische"></span><span id="analysis-kurvendiskussion"></span><h2>Quadratische Gleichungen</h2><p class="formula">pq: x₁,₂ = -p/2 ± √((p/2)² - q)<br>abc: x₁,₂ = (-b ± √(b² - 4ac)) / (2a)</p><p>Die pq-Formel passt zu x² + px + q = 0. Die abc-Formel passt zu ax² + bx + c = 0.</p></article>
+        <article class="explain-block" id="geometrie-pythagoras"><span id="geometrie-kreis"></span><span id="geometrie-koerper"></span><h2>Geometrie</h2><p class="formula">Rechteck: A = a · b<br>Dreieck: A = g · h / 2<br>Kreis: U = 2 · π · r, A = π · r²<br>Pythagoras: a² + b² = c²</p><p>A ist Fläche, U ist Umfang, r ist Radius, g ist Grundseite, h ist Höhe.</p></article>
+        <article class="explain-block" id="grundlagen-prozent"><span id="finanzmathe-zinsen"></span><span id="finanzmathe-zinseszins"></span><span id="finanzmathe-wachstum"></span><h2>Prozent und Zinsen</h2><p class="formula">W = G · p / 100<br>Z = K · p / 100<br>Kₙ = K₀ · (1 + p/100)ⁿ</p><p>G ist Grundwert, W Prozentwert, K Kapital, p Prozentsatz, n Anzahl der Jahre oder Schritte.</p></article>
+        <article class="explain-block" id="grundlagen-brueche"><span id="grundlagen-negative-zahlen"></span><span id="grundlagen-dreisatz"></span><h2>Grundlagen</h2><p class="formula">a/b + c/b = (a + c)/b<br>|x| = Abstand zu 0<br>Dreisatz: erst auf 1, dann auf das Ziel</p><p>Diese Regeln helfen bei Brüchen, Vorzeichen und proportionalen Aufgaben.</p></article>
+        <article class="explain-block" id="funktionen-lineare"><span id="funktionen-exponentiell"></span><h2>Funktionen</h2><p class="formula">linear: f(x) = mx + b<br>exponentiell: f(x) = a · qˣ</p><p>m beschreibt die Steigung, q den konstanten Wachstumsfaktor.</p></article>
+        <article class="explain-block" id="trigonometrie-dreieck"><span id="trigonometrie-graphen"></span><h2>Trigonometrie</h2><p class="formula">sin(α) = Gegenkathete / Hypotenuse<br>cos(α) = Ankathete / Hypotenuse<br>tan(α) = Gegenkathete / Ankathete</p><p>Am Einheitskreis entsprechen Sinus und Kosinus den Koordinaten des Punktes.</p></article>
+        <article class="explain-block" id="analysis-integral"><span id="analysis-ableitung"></span><h2>Analysis</h2><p class="formula">f′(x) = momentane Änderungsrate<br>∫ₐᵇ f(x) dx = orientierte Fläche</p><p>Ableitung beschreibt lokale Veränderung, Integral beschreibt aufsummierte Veränderung.</p></article>
+        <article class="explain-block" id="stochastik-wahrscheinlichkeit"><span id="stochastik-baumdiagramm"></span><span id="stochastik-erwartungswert"></span><h2>Stochastik</h2><p class="formula">P(E) = günstige / mögliche Ergebnisse<br>P(A und B) = P(A) · P(B | A)<br>E(X) = x₁ · P(x₁) + x₂ · P(x₂) + ...</p><p>Wahrscheinlichkeiten liegen zwischen 0 und 1 beziehungsweise zwischen 0 % und 100 %.</p></article>
+        <article class="explain-block" id="vektoren-grundlagen"><span id="vektoren-geraden"></span><span id="vektoren-skalarprodukt"></span><h2>Vektoren</h2><p class="formula">|v| = √(x² + y² + z²)<br>Gerade: x = p + t · v<br>a · b = 0 ⇒ a ⊥ b</p><p>Vektoren beschreiben Verschiebungen, Geraden und Winkelbeziehungen.</p></article>
       </section>
     </main>
-    <script src="app.js"></script>
+    <script src="simulation-data.js"></script><script src="app.js"></script>
   </body>
 </html>
