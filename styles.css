@@ -459,6 +459,25 @@ select {
   line-height: 1.45;
 }
 
+.frac {
+  display: inline-grid;
+  grid-template-rows: auto auto;
+  min-width: 1.4em;
+  margin: 0 0.12em;
+  vertical-align: middle;
+  text-align: center;
+  line-height: 1.05;
+}
+
+.frac > span {
+  display: block;
+  padding: 0 0.18em;
+}
+
+.frac > span:first-child {
+  border-bottom: 1.5px solid currentColor;
+}
+
 .inline-controls {
   display: grid;
   grid-template-columns: auto minmax(160px, 1fr) minmax(130px, auto);

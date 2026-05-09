@@ -835,6 +835,16 @@ function formatMathText(value) {
     .replace(/nicht B/g, "¬B");
 }
 
+function formatFractions(value) {
+  const token = String.raw`(?:-?\d+(?:\.\d+)?|[a-zA-Zα-ωΑ-Ω]+|[A-Z]\([^)]+\)|\([^()<>]+\))`;
+  const fractionPattern = new RegExp(`(${token})\\s*/\\s*(${token})`, "g");
+  return String(value).replace(fractionPattern, '<span class="frac"><span>$1</span><span>$2</span></span>');
+}
+
+function formatMathHtml(value) {
+  return formatFractions(formatMathText(value));
+}
+
 function steppedRandom(min, max, step) {
   const count = Math.round((max - min) / step);
   return Number((min + Math.floor(Math.random() * (count + 1)) * step).toFixed(4));
@@ -843,6 +853,21 @@ function steppedRandom(min, max, step) {
 function initMiniSimulation() {
   const page = window.location.pathname.split("/").pop() || "index.html";
   const configs = window.simulationConfigs || {};
+
+  function formulaAnchor() {
+    if (page.includes("brueche") || page.includes("negative") || page.includes("dreisatz")) return "grundlagen-brueche";
+    if (page.includes("pq-formel") || page.includes("mitternachtsformel") || page.includes("quadratische") || page.includes("kurvendiskussion")) return "algebra-pq-formel";
+    if (page.includes("gleichung") || page.includes("variablen") || page.includes("terme") || page.includes("potenzen") || page === "algebra.html") return "algebra-gleichungen";
+    if (page.includes("kreis") || page.includes("pythagoras") || page.includes("koerper") || page === "geometrie.html") return "geometrie-pythagoras";
+    if (page.includes("prozent") || page.includes("zins") || page.includes("wachstum") || page === "finanzmathe.html") return "grundlagen-prozent";
+    if (page.includes("lineare") || page.includes("exponentiell") || page === "funktionen.html") return "funktionen-lineare";
+    if (page.includes("trigonometrie")) return "trigonometrie-dreieck";
+    if (page.includes("analysis") || page.includes("ableitung") || page.includes("integral")) return "analysis-integral";
+    if (page.includes("stochastik")) return "stochastik-wahrscheinlichkeit";
+    if (page.includes("vektoren")) return "vektoren-grundlagen";
+    return "";
+  }
+
   function symbolFormula(values) {
     if (page.includes("pythagoras")) return "a² + b² = c²";
     if (page.includes("kreis")) return "U = 2πr, A = πr²";
@@ -1346,40 +1371,11 @@ function initMiniSimulation() {
     }
   }
 
-  const topicPages = new Set([
-    "grundlagen-brueche.html",
-    "grundlagen-prozent.html",
-    "grundlagen-negative-zahlen.html",
-    "algebra-variablen.html",
-    "algebra-gleichungen.html",
-    "algebra-terme.html",
-    "algebra-potenzen.html",
-    "algebra-gleichungssysteme.html",
-    "algebra-pq-formel.html",
-    "algebra-mitternachtsformel.html",
-    "funktionen-lineare.html",
-    "funktionen-quadratische.html",
-    "funktionen-exponentiell.html",
-    "geometrie-pythagoras.html",
-    "geometrie-kreis.html",
-    "trigonometrie-dreieck.html",
-    "trigonometrie-graphen.html",
-    "analysis-kurvendiskussion.html",
-    "analysis-integral.html",
-    "stochastik-wahrscheinlichkeit.html",
-    "stochastik-baumdiagramm.html",
-    "stochastik-erwartungswert.html",
-    "vektoren-grundlagen.html",
-    "vektoren-geraden.html",
-    "vektoren-skalarprodukt.html",
-    "finanzmathe-zinsen.html",
-    "finanzmathe-zinseszins.html",
-    "finanzmathe-wachstum.html",
-  ]);
-  const config = topicPages.has(page) ? configs[page] : null;
+  const config = configs[page] || null;
   if (!config || document.querySelector("#autoMiniSimulation")) return;
   const formulaText = symbolFormula([]);
-  const formulaHref = `formelsammlung.html#${page.replace(".html", "")}`;
+  const anchor = formulaAnchor();
+  const formulaHref = anchor ? `formelsammlung.html#${anchor}` : "formelsammlung.html";
 
   const section = document.createElement("section");
   section.className = "band mini-sim";
@@ -1447,15 +1443,100 @@ function initMiniSimulation() {
     return `${config.title}: ${pairs}. ${formatMathText(config.calc(values).replace(/<br>/g, ". "))}`;
   }
 
+  function practiceText(values) {
+    const pairs = config.controls.map(([label], index) => `${label} = ${values[index]}`).join(", ");
+
+    if (page.includes("dreisatz")) {
+      const [amount, value, target] = values;
+      return `${amount} Hefte kosten ${value} Euro. Wie viel kosten ${target} Hefte, wenn der Preis proportional bleibt?`;
+    }
+    if (page.includes("brueche")) {
+      return `Berechne den Wert des Bruchs ${values[0]}/${values[1]} als Dezimalzahl.`;
+    }
+    if (page.includes("prozent")) {
+      return `Ein Grundwert beträgt ${values[0]}. Wie groß sind ${values[1]} % davon?`;
+    }
+    if (page.includes("negative")) {
+      return `Berechne ${values[0]} · ${values[1]} und gib zusätzlich den Betrag von ${values[0]} an.`;
+    }
+    if (page.includes("gleichungssysteme")) {
+      return `Bestimme den Schnittpunkt der Geraden mit ${pairs}.`;
+    }
+    if (page.includes("pq-formel")) {
+      return `Löse die Gleichung x² + ${values[0]}x + ${values[1]} = 0 mit der pq-Formel.`;
+    }
+    if (page.includes("mitternachtsformel")) {
+      return `Löse ${values[0]}x² + ${values[1]}x + ${values[2]} = 0 mit der abc-Formel.`;
+    }
+    if (page.includes("potenzen")) {
+      return `Berechne die Potenz ${values[0]}^${values[1]}.`;
+    }
+    if (page.includes("terme")) {
+      return `Fasse den Term ${values[0]}x + ${values[1]}x + ${values[2]} zusammen.`;
+    }
+    if (page.includes("variablen")) {
+      return `Setze x = ${values[2]} in den Term ${values[0]}x + ${values[1]} ein.`;
+    }
+    if (page.includes("pythagoras")) {
+      return `Ein rechtwinkliges Dreieck hat die Katheten ${values[0]} und ${values[1]}. Berechne die Hypotenuse.`;
+    }
+    if (page.includes("kreis")) {
+      return `Ein Kreis hat den Radius ${values[0]}. Berechne Umfang und Fläche.`;
+    }
+    if (page.includes("trigonometrie-dreieck")) {
+      return `Berechne sin, cos und tan für einen Winkel von ${values[0]}°.`;
+    }
+    if (page.includes("trigonometrie-graphen")) {
+      return `Bestimme Amplitude und Periode der Funktion f(x) = ${values[0]} · sin(${values[1]}x).`;
+    }
+    if (page.includes("lineare")) {
+      return `Bestimme die Steigung aus Δx = ${values[0]} und Δy = ${values[1]}.`;
+    }
+    if (page.includes("quadratische") || page.includes("kurvendiskussion")) {
+      return `Bestimme den Scheitelpunkt der Funktion f(x) = ${values[0]}(x - ${values[1]})² + ${values[2]}.`;
+    }
+    if (page.includes("exponentiell")) {
+      return `Berechne den Funktionswert für Startwert ${values[0]}, Faktor ${values[1]} und x = ${values[2]}.`;
+    }
+    if (page.includes("ableitung") || page === "analysis.html") {
+      return `Berechne f(${values[0]}) und f′(${values[0]}) für f(x) = x².`;
+    }
+    if (page.includes("integral")) {
+      return `Berechne die Fläche unter f(x)=x² von 0 bis ${values[0]}.`;
+    }
+    if (page.includes("baumdiagramm")) {
+      return `Berechne die Pfadwahrscheinlichkeiten für ${pairs}.`;
+    }
+    if (page.includes("erwartungswert")) {
+      return `Ein Spiel hat ${values[0]} Euro Gewinnchance bei ${values[1]} % und kostet ${values[2]} Euro. Berechne den Erwartungswert.`;
+    }
+    if (page.includes("wahrscheinlichkeit")) {
+      return `Wie wahrscheinlich ist es, mit einem Würfel höchstens ${values[0]} zu werfen?`;
+    }
+    if (page.includes("vektoren-geraden")) {
+      return `Setze t = ${values[0]} in die Gerade p=(1|2), v=(3|1) ein.`;
+    }
+    if (page.includes("vektoren-skalarprodukt")) {
+      return `Berechne das Skalarprodukt der Vektoren a=(${values[0]}|${values[1]}) und b=(${values[2]}|${values[3]}).`;
+    }
+    if (page.includes("vektoren")) {
+      return `Berechne die Länge des Vektors mit ${pairs}.`;
+    }
+    if (page.includes("zins") || page.includes("finanz")) {
+      return `Berechne das Ergebnis für ${pairs}.`;
+    }
+
+    return `Bearbeite die Beispielaufgabe mit diesen Werten: ${pairs}.`;
+  }
+
   function renderPractice() {
     const values = config.controls.map(([label, min, max, step]) => {
       const boundedMin = Math.max(min, -12);
       const boundedMax = Math.min(max, 30);
       return steppedRandom(boundedMin, boundedMax, step);
     });
-    const pairs = config.controls.map(([label], index) => `${label} = ${values[index]}`).join(", ");
-    practiceTask.textContent = `${config.title}: ${pairs}`;
-    practiceSolution.innerHTML = `<div class="symbol-line">${formatMathText(formulaText)}</div>${formatMathText(config.calc(values))}`;
+    practiceTask.innerHTML = formatMathHtml(practiceText(values));
+    practiceSolution.innerHTML = `<div class="symbol-line">${formatMathHtml(formulaText)}</div>${formatMathHtml(config.calc(values))}`;
     practiceSolution.hidden = true;
     solutionPracticeBtn.textContent = "Lösung zeigen";
   }
@@ -1466,7 +1547,7 @@ function initMiniSimulation() {
       numberInputs[index].value = input.value;
       numberInputs[index].nextElementSibling.textContent = input.value;
     });
-    output.innerHTML = `<div class="symbol-line">${formatMathText(symbolFormula(values))}</div>${formatMathText(config.calc(values))}`;
+    output.innerHTML = `<div class="symbol-line">${formatMathHtml(symbolFormula(values))}</div>${formatMathHtml(config.calc(values))}`;
     summary.textContent = describe(values);
     drawMiniVisual(visual, values);
   }
@@ -1510,7 +1591,14 @@ function enhanceNavigation() {
   });
 }
 
+function enhanceStaticFormulas() {
+  document.querySelectorAll(".formula").forEach((formula) => {
+    formula.innerHTML = formatMathHtml(formula.innerHTML);
+  });
+}
+
 enhanceNavigation();
+enhanceStaticFormulas();
 initUnitCircle();
 initSineUnitCircle();
 initDerivative();
