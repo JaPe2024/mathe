@@ -1,6 +1,16 @@
 ﻿'use strict';
 
 window.simulationConfigs = {
+    "grundlagen.html": {
+      title: "Grundlagen-Mix",
+      intro: "Übe einfache Zahlen, Prozentwerte und Rechenschritte mit kleinen Zahlen.",
+      controls: [
+        ["Zahl a", 1, 30, 1, 12],
+        ["Zahl b", 1, 30, 1, 4],
+        ["Prozent", 0, 100, 5, 25],
+      ],
+      calc: ([a, b, p]) => `a + b = ${a + b}<br>a - b = ${a - b}<br>${p}% von ${a} = ${(a * p / 100).toFixed(2)}`,
+    },
     "algebra.html": {
       title: "Gleichungssimulator",
       intro: "Verändere die Werte und sieh, welche Lösung die Gleichung ax + b = c hat.",
@@ -196,6 +206,15 @@ window.simulationConfigs = {
       controls: [["Radius", 1, 30, 1, 8]],
       calc: ([r]) => `Umfang: ${(2 * Math.PI * r).toFixed(2)}<br>Fläche: ${(Math.PI * r * r).toFixed(2)}`,
     },
+    "geometrie-koerper.html": {
+      title: "Körperrechner",
+      intro: "Vergleiche Volumen und Oberfläche einfacher Körper.",
+      controls: [
+        ["Kantenlänge a", 1, 12, 1, 4],
+        ["Höhe h", 1, 20, 1, 8],
+      ],
+      calc: ([a, h]) => `Würfel: V = ${a ** 3}, O = ${6 * a ** 2}<br>Prisma mit G = ${a ** 2}: V = ${a ** 2 * h}<br>Pyramide mit G = ${a ** 2}: V = ${(a ** 2 * h / 3).toFixed(2)}`,
+    },
     "trigonometrie.html": {
       title: "Dreieck-Sinus",
       intro: "Bei fester Hypotenuse verändert der Winkel die Gegenkathete.",
@@ -204,6 +223,15 @@ window.simulationConfigs = {
         ["Hypotenuse", 1, 20, 1, 10],
       ],
       calc: ([deg, hyp]) => `Gegenkathete = ${hyp} * sin(${deg} deg) = ${(hyp * Math.sin((deg * Math.PI) / 180)).toFixed(2)}`,
+    },
+    "trigonometrie-einheitskreis.html": {
+      title: "Einheitskreis",
+      intro: "Sinus und Kosinus sind die Koordinaten eines Punktes auf dem Einheitskreis.",
+      controls: [["Winkel", 0, 360, 5, 45]],
+      calc: ([deg]) => {
+        const rad = (deg * Math.PI) / 180;
+        return `sin(${deg} deg) = ${Math.sin(rad).toFixed(3)}<br>cos(${deg} deg) = ${Math.cos(rad).toFixed(3)}<br>Bogenmaß = ${rad.toFixed(3)}`;
+      },
     },
     "trigonometrie-dreieck.html": {
       title: "Seitenverhaeltnisse",
@@ -228,6 +256,12 @@ window.simulationConfigs = {
       intro: "Bei f(x)=x^2 ist die Ableitung f'(x)=2x.",
       controls: [["x", -6, 6, 0.5, 2]],
       calc: ([x]) => `f(${x}) = ${(x * x).toFixed(2)}<br>f'(${x}) = ${(2 * x).toFixed(2)}`,
+    },
+    "analysis-ableitung.html": {
+      title: "Ableitung von x² - 1",
+      intro: "Die Ableitung zeigt die Tangentensteigung an einer Stelle.",
+      controls: [["x", -6, 6, 0.5, 1]],
+      calc: ([x]) => `f(${x}) = ${(x * x - 1).toFixed(2)}<br>f'(${x}) = ${(2 * x).toFixed(2)}`,
     },
     "analysis-kurvendiskussion.html": {
       title: "Extrempunkt einer Parabel",

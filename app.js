@@ -855,7 +855,7 @@ function initMiniSimulation() {
   const configs = window.simulationConfigs || {};
 
   function formulaAnchor() {
-    if (page.includes("brueche") || page.includes("negative") || page.includes("dreisatz")) return "grundlagen-brueche";
+    if (page === "grundlagen.html" || page.includes("brueche") || page.includes("negative") || page.includes("dreisatz")) return "grundlagen-brueche";
     if (page.includes("pq-formel") || page.includes("mitternachtsformel") || page.includes("quadratische") || page.includes("kurvendiskussion")) return "algebra-pq-formel";
     if (page.includes("gleichung") || page.includes("variablen") || page.includes("terme") || page.includes("potenzen") || page === "algebra.html") return "algebra-gleichungen";
     if (page.includes("kreis") || page.includes("pythagoras") || page.includes("koerper") || page === "geometrie.html") return "geometrie-pythagoras";
@@ -1397,15 +1397,27 @@ function initMiniSimulation() {
     </div>
     <div class="practice-panel">
       <div>
-        <p class="eyebrow">Mini-Aufgabe</p>
-        <h3>Rechne zuerst selbst.</h3>
+        <p class="eyebrow">Beispielaufgabe</p>
+        <h3>Rechne mit Hilfe der Simulation.</h3>
         <p class="practice-task"></p>
       </div>
       <div class="practice-actions">
-        <button class="tool-button" type="button" data-practice-new>Neue Aufgabe</button>
-        <button class="tool-button" type="button" data-practice-solution>Lösung zeigen</button>
+        <button class="tool-button" type="button" data-practice-new>Neue Beispielaufgabe</button>
+        <button class="tool-button" type="button" data-practice-solution>Beispiellösung zeigen</button>
       </div>
       <div class="practice-solution" hidden aria-live="polite"></div>
+    </div>
+    <div class="practice-panel exam-panel">
+      <div>
+        <p class="eyebrow">Prüfungsaufgabe</p>
+        <h3>Teste dich ohne Simulation.</h3>
+        <p class="exam-task"></p>
+      </div>
+      <div class="practice-actions">
+        <button class="tool-button" type="button" data-exam-new>Neue Prüfungsaufgabe</button>
+        <button class="tool-button" type="button" data-exam-solution>Lösung prüfen</button>
+      </div>
+      <div class="exam-solution" hidden aria-live="polite"></div>
     </div>
   `;
   const main = document.querySelector("main");
@@ -1422,8 +1434,12 @@ function initMiniSimulation() {
   const visual = section.querySelector(".mini-visual");
   const practiceTask = section.querySelector(".practice-task");
   const practiceSolution = section.querySelector(".practice-solution");
+  const examTask = section.querySelector(".exam-task");
+  const examSolution = section.querySelector(".exam-solution");
   const newPracticeBtn = section.querySelector("[data-practice-new]");
   const solutionPracticeBtn = section.querySelector("[data-practice-solution]");
+  const newExamBtn = section.querySelector("[data-exam-new]");
+  const solutionExamBtn = section.querySelector("[data-exam-solution]");
   const inputs = config.controls.map(([label, min, max, step, value], index) => {
     const row = document.createElement("label");
     row.className = "mini-control";
@@ -1443,102 +1459,126 @@ function initMiniSimulation() {
     return `${config.title}: ${pairs}. ${formatMathText(config.calc(values).replace(/<br>/g, ". "))}`;
   }
 
-  function practiceText(values) {
+  function practiceText(values, mode = "practice") {
     const pairs = config.controls.map(([label], index) => `${label} = ${values[index]}`).join(", ");
+    const examPrefix = mode === "exam" ? "Prüfungsaufgabe: " : "";
 
     if (page.includes("dreisatz")) {
       const [amount, value, target] = values;
-      return `${amount} Hefte kosten ${value} Euro. Wie viel kosten ${target} Hefte, wenn der Preis proportional bleibt?`;
+      return `${examPrefix}${amount} Hefte kosten ${value} Euro. Wie viel kosten ${target} Hefte, wenn der Preis proportional bleibt? Begründe mit dem Rechenschritt über 1 Heft.`;
     }
     if (page.includes("brueche")) {
-      return `Berechne den Wert des Bruchs ${values[0]}/${values[1]} als Dezimalzahl.`;
+      return `${examPrefix}Berechne den Wert des Bruchs ${values[0]}/${values[1]} als Dezimalzahl und kürze, falls möglich.`;
+    }
+    if (page === "grundlagen.html") {
+      return `${examPrefix}Berechne mit Zahl a = ${values[0]}, Zahl b = ${values[1]} und ${values[2]} %: a + b, a - b und den Prozentwert von a.`;
     }
     if (page.includes("prozent")) {
-      return `Ein Grundwert beträgt ${values[0]}. Wie groß sind ${values[1]} % davon?`;
+      return `${examPrefix}Ein Grundwert beträgt ${values[0]}. Wie groß sind ${values[1]} % davon? Notiere Formel und Ergebnis.`;
     }
     if (page.includes("negative")) {
-      return `Berechne ${values[0]} · ${values[1]} und gib zusätzlich den Betrag von ${values[0]} an.`;
+      return `${examPrefix}Berechne ${values[0]} · ${values[1]} und gib zusätzlich den Betrag von ${values[0]} an.`;
     }
     if (page.includes("gleichungssysteme")) {
-      return `Bestimme den Schnittpunkt der Geraden mit ${pairs}.`;
+      return `${examPrefix}Bestimme den Schnittpunkt der Geraden mit ${pairs}.`;
     }
     if (page.includes("pq-formel")) {
-      return `Löse die Gleichung x² + ${values[0]}x + ${values[1]} = 0 mit der pq-Formel.`;
+      return `${examPrefix}Löse die Gleichung x² + ${values[0]}x + ${values[1]} = 0 mit der pq-Formel.`;
     }
     if (page.includes("mitternachtsformel")) {
-      return `Löse ${values[0]}x² + ${values[1]}x + ${values[2]} = 0 mit der abc-Formel.`;
+      return `${examPrefix}Löse ${values[0]}x² + ${values[1]}x + ${values[2]} = 0 mit der abc-Formel.`;
     }
     if (page.includes("potenzen")) {
-      return `Berechne die Potenz ${values[0]}^${values[1]}.`;
+      return `${examPrefix}Berechne die Potenz ${values[0]}^${values[1]}.`;
     }
     if (page.includes("terme")) {
-      return `Fasse den Term ${values[0]}x + ${values[1]}x + ${values[2]} zusammen.`;
+      return `${examPrefix}Fasse den Term ${values[0]}x + ${values[1]}x + ${values[2]} zusammen.`;
     }
     if (page.includes("variablen")) {
-      return `Setze x = ${values[2]} in den Term ${values[0]}x + ${values[1]} ein.`;
+      return `${examPrefix}Setze x = ${values[2]} in den Term ${values[0]}x + ${values[1]} ein.`;
     }
     if (page.includes("pythagoras")) {
-      return `Ein rechtwinkliges Dreieck hat die Katheten ${values[0]} und ${values[1]}. Berechne die Hypotenuse.`;
+      return `${examPrefix}Ein rechtwinkliges Dreieck hat die Katheten ${values[0]} und ${values[1]}. Berechne die Hypotenuse.`;
     }
     if (page.includes("kreis")) {
-      return `Ein Kreis hat den Radius ${values[0]}. Berechne Umfang und Fläche.`;
+      return `${examPrefix}Ein Kreis hat den Radius ${values[0]}. Berechne Umfang und Fläche.`;
+    }
+    if (page.includes("koerper")) {
+      return `${examPrefix}Ein Würfel hat Kantenlänge ${values[0]}. Ein Prisma hat Grundfläche ${values[0]}² und Höhe ${values[1]}. Berechne die Volumen.`;
+    }
+    if (page.includes("einheitskreis")) {
+      return `${examPrefix}Bestimme sin, cos und das Bogenmaß für einen Winkel von ${values[0]}° am Einheitskreis.`;
     }
     if (page.includes("trigonometrie-dreieck")) {
-      return `Berechne sin, cos und tan für einen Winkel von ${values[0]}°.`;
+      return `${examPrefix}Berechne sin, cos und tan für einen Winkel von ${values[0]}°.`;
     }
     if (page.includes("trigonometrie-graphen")) {
-      return `Bestimme Amplitude und Periode der Funktion f(x) = ${values[0]} · sin(${values[1]}x).`;
+      return `${examPrefix}Bestimme Amplitude und Periode der Funktion f(x) = ${values[0]} · sin(${values[1]}x).`;
     }
     if (page.includes("lineare")) {
-      return `Bestimme die Steigung aus Δx = ${values[0]} und Δy = ${values[1]}.`;
+      return `${examPrefix}Bestimme die Steigung aus Δx = ${values[0]} und Δy = ${values[1]}.`;
     }
     if (page.includes("quadratische") || page.includes("kurvendiskussion")) {
-      return `Bestimme den Scheitelpunkt der Funktion f(x) = ${values[0]}(x - ${values[1]})² + ${values[2]}.`;
+      return `${examPrefix}Bestimme den Scheitelpunkt der Funktion f(x) = ${values[0]}(x - ${values[1]})² + ${values[2]}.`;
     }
     if (page.includes("exponentiell")) {
-      return `Berechne den Funktionswert für Startwert ${values[0]}, Faktor ${values[1]} und x = ${values[2]}.`;
+      return `${examPrefix}Berechne den Funktionswert für Startwert ${values[0]}, Faktor ${values[1]} und x = ${values[2]}.`;
     }
     if (page.includes("ableitung") || page === "analysis.html") {
-      return `Berechne f(${values[0]}) und f′(${values[0]}) für f(x) = x².`;
+      return `${examPrefix}Berechne f(${values[0]}) und f′(${values[0]}) für f(x) = x².`;
     }
     if (page.includes("integral")) {
-      return `Berechne die Fläche unter f(x)=x² von 0 bis ${values[0]}.`;
+      return `${examPrefix}Berechne die Fläche unter f(x)=x² von 0 bis ${values[0]}.`;
     }
     if (page.includes("baumdiagramm")) {
-      return `Berechne die Pfadwahrscheinlichkeiten für ${pairs}.`;
+      return `${examPrefix}Berechne die Pfadwahrscheinlichkeiten für ${pairs}.`;
     }
     if (page.includes("erwartungswert")) {
-      return `Ein Spiel hat ${values[0]} Euro Gewinnchance bei ${values[1]} % und kostet ${values[2]} Euro. Berechne den Erwartungswert.`;
+      return `${examPrefix}Ein Spiel hat ${values[0]} Euro Gewinnchance bei ${values[1]} % und kostet ${values[2]} Euro. Berechne den Erwartungswert.`;
     }
     if (page.includes("wahrscheinlichkeit")) {
-      return `Wie wahrscheinlich ist es, mit einem Würfel höchstens ${values[0]} zu werfen?`;
+      return `${examPrefix}Wie wahrscheinlich ist es, mit einem Würfel höchstens ${values[0]} zu werfen?`;
     }
     if (page.includes("vektoren-geraden")) {
-      return `Setze t = ${values[0]} in die Gerade p=(1|2), v=(3|1) ein.`;
+      return `${examPrefix}Setze t = ${values[0]} in die Gerade p=(1|2), v=(3|1) ein.`;
     }
     if (page.includes("vektoren-skalarprodukt")) {
-      return `Berechne das Skalarprodukt der Vektoren a=(${values[0]}|${values[1]}) und b=(${values[2]}|${values[3]}).`;
+      return `${examPrefix}Berechne das Skalarprodukt der Vektoren a=(${values[0]}|${values[1]}) und b=(${values[2]}|${values[3]}).`;
     }
     if (page.includes("vektoren")) {
-      return `Berechne die Länge des Vektors mit ${pairs}.`;
+      return `${examPrefix}Berechne die Länge des Vektors mit ${pairs}.`;
     }
     if (page.includes("zins") || page.includes("finanz")) {
-      return `Berechne das Ergebnis für ${pairs}.`;
+      return `${examPrefix}Berechne das Ergebnis für ${pairs}.`;
     }
 
-    return `Bearbeite die Beispielaufgabe mit diesen Werten: ${pairs}.`;
+    return `${examPrefix}Bearbeite die Aufgabe mit diesen Werten: ${pairs}.`;
+  }
+
+  function randomValues(mode = "practice") {
+    return config.controls.map(([label, min, max, step, value]) => {
+      const boundedMin = Math.max(min, -12);
+      const cap = mode === "exam" ? 40 : 30;
+      const boundedMax = max > cap && min <= cap ? cap : max;
+      if (boundedMax < boundedMin) return value;
+      return steppedRandom(boundedMin, boundedMax, step);
+    });
   }
 
   function renderPractice() {
-    const values = config.controls.map(([label, min, max, step]) => {
-      const boundedMin = Math.max(min, -12);
-      const boundedMax = Math.min(max, 30);
-      return steppedRandom(boundedMin, boundedMax, step);
-    });
+    const values = randomValues("practice");
     practiceTask.innerHTML = formatMathHtml(practiceText(values));
     practiceSolution.innerHTML = `<div class="symbol-line">${formatMathHtml(formulaText)}</div>${formatMathHtml(config.calc(values))}`;
     practiceSolution.hidden = true;
-    solutionPracticeBtn.textContent = "Lösung zeigen";
+    solutionPracticeBtn.textContent = "Beispiellösung zeigen";
+  }
+
+  function renderExam() {
+    const values = randomValues("exam");
+    examTask.innerHTML = formatMathHtml(practiceText(values, "exam"));
+    examSolution.innerHTML = `<div class="symbol-line">${formatMathHtml(formulaText)}</div>${formatMathHtml(config.calc(values))}`;
+    examSolution.hidden = true;
+    solutionExamBtn.textContent = "Lösung prüfen";
   }
 
   function update() {
@@ -1565,10 +1605,16 @@ function initMiniSimulation() {
   newPracticeBtn.addEventListener("click", renderPractice);
   solutionPracticeBtn.addEventListener("click", () => {
     practiceSolution.hidden = !practiceSolution.hidden;
-    solutionPracticeBtn.textContent = practiceSolution.hidden ? "Lösung zeigen" : "Lösung ausblenden";
+    solutionPracticeBtn.textContent = practiceSolution.hidden ? "Beispiellösung zeigen" : "Beispiellösung ausblenden";
+  });
+  newExamBtn.addEventListener("click", renderExam);
+  solutionExamBtn.addEventListener("click", () => {
+    examSolution.hidden = !examSolution.hidden;
+    solutionExamBtn.textContent = examSolution.hidden ? "Lösung prüfen" : "Lösung ausblenden";
   });
   window.addEventListener("resize", update);
   renderPractice();
+  renderExam();
   update();
 }
 
