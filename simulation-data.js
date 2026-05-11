@@ -163,14 +163,19 @@ window.simulationConfigs = {
       calc: ([dx, dy]) => `m = Delta y / Delta x = ${dy} / ${dx} = ${(dy / dx).toFixed(2)}`,
     },
     "funktionen-quadratische.html": {
-      title: "Parabel in Scheitelform",
-      intro: "Verändere Streckung und Scheitelpunkt.",
+      title: "Parabel in Normalform",
+      intro: "Verändere a, b und c in f(x) = ax^2 + bx + c.",
       controls: [
         ["a", -3, 3, 0.5, 1],
-        ["d", -5, 5, 1, 2],
-        ["e", -5, 5, 1, -1],
+        ["b", -8, 8, 1, -4],
+        ["c", -6, 6, 1, 1],
       ],
-      calc: ([a, d, e]) => `f(x) = ${a}(x - ${d})^2 + ${e}<br>Scheitelpunkt: S(${d} | ${e})`,
+      calc: ([a, b, c]) => {
+        if (a === 0) return `f(x) = ${b}x + ${c}<br>a = 0: Das ist keine Parabel, sondern eine lineare Funktion.<br>y-Achsenabschnitt: (0 | ${c})`;
+        const xs = -b / (2 * a);
+        const ys = a * xs ** 2 + b * xs + c;
+        return `f(x) = ${a}x^2 + ${b}x + ${c}<br>y-Achsenabschnitt: (0 | ${c})<br>Symmetrieachse: x = ${xs.toFixed(2)}<br>Scheitelpunkt: S(${xs.toFixed(2)} | ${ys.toFixed(2)})`;
+      },
     },
     "funktionen-exponentiell.html": {
       title: "Exponentielles Wachstum",

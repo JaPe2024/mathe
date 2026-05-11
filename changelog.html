@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Changelog | Mathe Simulationen</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="index.html" aria-label="Startseite">
+        <span class="brand-mark">M</span>
+        <span>Mathe Simulationen</span>
+      </a>
+      <nav class="nav" aria-label="Hauptnavigation">
+        <a href="index.html">Start</a>
+        <a href="fachgebiete.html">Fachgebiete</a>
+        <a class="active" href="changelog.html" aria-current="page">Changelog</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="page-intro">
+        <p class="eyebrow">Updates</p>
+        <h1>Changelog</h1>
+        <p>Hier stehen die wichtigsten Änderungen an den Erklärungen, Simulationen und Seiten.</p>
+      </section>
+
+      <section class="explain-list changelog-list">
+        <article class="explain-block changelog-entry">
+          <time datetime="2026-05-11">11. Mai 2026</time>
+          <h2>Quadratische Funktionen genauer erklärt</h2>
+          <ul class="explain-points">
+            <li>Normalform f(x) = ax² + bx + c genauer beschrieben.</li>
+            <li>b erklärt: bestimmt zusammen mit a die Symmetrieachse x = -b / (2a).</li>
+            <li>c erklärt: y-Achsenabschnitt, also der Punkt (0 | c).</li>
+            <li>Scheitelpunkt jetzt auch aus der Normalform hergeleitet: xS = -b / (2a), yS = f(xS).</li>
+          </ul>
+        </article>
+
+        <article class="explain-block changelog-entry">
+          <time datetime="2026-05-11">11. Mai 2026</time>
+          <h2>Simulation auf Normalform umgestellt</h2>
+          <ul class="explain-points">
+            <li>Die Seite „Quadratische Funktionen“ nutzt jetzt Regler für a, b und c.</li>
+            <li>Der Graph zeigt f(x) = ax² + bx + c statt nur die Scheitelform.</li>
+            <li>Scheitelpunkt und y-Achsenabschnitt werden im Graphen markiert.</li>
+            <li>Für a = 0 wird angezeigt, dass keine Parabel, sondern eine lineare Funktion entsteht.</li>
+          </ul>
+        </article>
+
+        <article class="explain-block changelog-entry">
+          <time datetime="2026-05-11">11. Mai 2026</time>
+          <h2>Changelog-Seite hinzugefügt</h2>
+          <ul class="explain-points">
+            <li>Neue Seite für nachvollziehbare Projektänderungen erstellt.</li>
+            <li>Changelog ist über die Hauptnavigation erreichbar.</li>
+          </ul>
+        </article>
+      </section>
+    </main>
+
+    <script src="simulation-data.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

@@ -952,7 +952,7 @@ function initMiniSimulation() {
     if (page.includes("negative")) return "|x| = Abstand zu 0";
     if (page.includes("dreisatz")) return "erst auf 1, dann auf Ziel";
     if (page.includes("exponentiell")) return "f(x) = a · qˣ";
-    if (page.includes("quadratische")) return "f(x) = a(x - d)² + e";
+    if (page.includes("quadratische")) return "f(x) = ax² + bx + c";
     if (page.includes("lineare") || page.includes("funktionen")) return "f(x) = mx + b";
     if (page.includes("potenzen")) return "aᵐ · aⁿ = aᵐ⁺ⁿ";
     if (page.includes("terme")) return "ax + bx = (a+b)x";
@@ -1252,7 +1252,25 @@ function initMiniSimulation() {
         ctx.fill();
         label("S", sx(x) + 8, sy(y) - 8, colors.amber);
       }
-    } else if (page.includes("quadratische") || page.includes("kurvendiskussion")) {
+    } else if (page.includes("quadratische")) {
+      axes();
+      const [a, b, c] = values;
+      plot((x) => a * x ** 2 + b * x + c, colors.teal);
+      if (a !== 0) {
+        const xs = -b / (2 * a);
+        const ys = a * xs ** 2 + b * xs + c;
+        ctx.fillStyle = colors.red;
+        ctx.beginPath();
+        ctx.arc(sx(xs), sy(ys), 6, 0, Math.PI * 2);
+        ctx.fill();
+        label("S", sx(xs) + 8, sy(ys) - 8, colors.red);
+      }
+      ctx.fillStyle = colors.amber;
+      ctx.beginPath();
+      ctx.arc(sx(0), sy(c), 5, 0, Math.PI * 2);
+      ctx.fill();
+      label("c", sx(0) + 8, sy(c) - 8, colors.amber);
+    } else if (page.includes("kurvendiskussion")) {
       axes();
       const [a, d, e] = values;
       plot((x) => a * (x - d) ** 2 + e, colors.teal);
@@ -1581,7 +1599,11 @@ function initMiniSimulation() {
     if (page.includes("lineare")) {
       return `${examPrefix}Bestimme die Steigung aus Δx = ${values[0]} und Δy = ${values[1]}.`;
     }
-    if (page.includes("quadratische") || page.includes("kurvendiskussion")) {
+    if (page.includes("quadratische")) {
+      if (values[0] === 0) return `${examPrefix}Erkläre, warum f(x) = ${values[1]}x + ${values[2]} keine quadratische Funktion ist, und gib den y-Achsenabschnitt an.`;
+      return `${examPrefix}Bestimme y-Achsenabschnitt, Symmetrieachse und Scheitelpunkt der Funktion f(x) = ${values[0]}x² + ${values[1]}x + ${values[2]}.`;
+    }
+    if (page.includes("kurvendiskussion")) {
       return `${examPrefix}Bestimme den Scheitelpunkt der Funktion f(x) = ${values[0]}(x - ${values[1]})² + ${values[2]}.`;
     }
     if (page.includes("exponentiell")) {
@@ -1692,11 +1714,40 @@ function enhanceNavigation() {
     nav.append(formulaLink);
   }
 
+  if (!nav.querySelector('a[href="klasse5.html"]')) {
+    const class5Link = document.createElement("a");
+    class5Link.href = "klasse5.html";
+    class5Link.textContent = "Klasse 5";
+    nav.append(class5Link);
+  }
+
+  if (!nav.querySelector('a[href="klasse6.html"]')) {
+    const class6Link = document.createElement("a");
+    class6Link.href = "klasse6.html";
+    class6Link.textContent = "Klasse 6";
+    nav.append(class6Link);
+  }
+
+  if (!nav.querySelector('a[href="klasse7.html"]')) {
+    const class7Link = document.createElement("a");
+    class7Link.href = "klasse7.html";
+    class7Link.textContent = "Klasse 7";
+    nav.append(class7Link);
+  }
+
+  if (!nav.querySelector('a[href="changelog.html"]')) {
+    const changelogLink = document.createElement("a");
+    changelogLink.href = "changelog.html";
+    changelogLink.textContent = "Changelog";
+    nav.append(changelogLink);
+  }
+
   const page = window.location.pathname.split("/").pop() || "index.html";
   nav.querySelectorAll("a").forEach((link) => {
     const href = link.getAttribute("href");
-    link.classList.toggle("active", href === page);
-    if (href === page) link.setAttribute("aria-current", "page");
+    const isCurrent = href === page || (href === "klasse5.html" && page.startsWith("klasse5-")) || (href === "klasse6.html" && page.startsWith("klasse6-")) || (href === "klasse7.html" && page.startsWith("klasse7-"));
+    link.classList.toggle("active", isCurrent);
+    if (isCurrent) link.setAttribute("aria-current", "page");
   });
 }
 
@@ -1706,8 +1757,217 @@ function enhanceStaticFormulas() {
   });
 }
 
+function initClass5Trainer() {
+  const root = document.querySelector("#class5Trainer");
+  if (!root) return;
+
+  const randomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+  const pick = (items) => items[Math.floor(Math.random() * items.length)];
+  const euro = (value) => `${Number(value.toFixed(2)).toLocaleString("de-DE")} Euro`;
+
+  const trainers = [
+    {
+      id: "zahlen-groessen",
+      label: "1. Natürliche Zahlen und Größen",
+      make() {
+        const type = pick(["round", "convert", "scale"]);
+        if (type === "round") {
+          const n = randomInt(1200, 980000);
+          const place = pick([10, 100, 1000]);
+          const result = Math.round(n / place) * place;
+          return {
+            title: "Runden und Überschlag",
+            task: `Runde ${n.toLocaleString("de-DE")} auf ${place === 10 ? "Zehner" : place === 100 ? "Hunderter" : "Tausender"}.`,
+            solution: `${n.toLocaleString("de-DE")} ≈ ${result.toLocaleString("de-DE")}`,
+          };
+        }
+        if (type === "convert") {
+          const m = randomInt(2, 9);
+          const cm = randomInt(10, 95);
+          return {
+            title: "Größen umrechnen",
+            task: `Schreibe ${m} m ${cm} cm in Zentimetern und als Kommazahl in Metern.`,
+            solution: `${m} m ${cm} cm = ${m * 100 + cm} cm = ${(m + cm / 100).toLocaleString("de-DE")} m`,
+          };
+        }
+        const map = randomInt(2, 12);
+        const scale = pick([1000, 10000, 50000]);
+        return {
+          title: "Maßstab",
+          task: `Auf einer Karte im Maßstab 1:${scale.toLocaleString("de-DE")} sind zwei Orte ${map} cm voneinander entfernt. Wie weit ist das in Wirklichkeit?`,
+          solution: `${map} cm · ${scale.toLocaleString("de-DE")} = ${(map * scale).toLocaleString("de-DE")} cm = ${(map * scale / 100000).toLocaleString("de-DE")} km`,
+        };
+      },
+    },
+    {
+      id: "geometrie",
+      label: "2. Grundbegriffe der Geometrie",
+      make() {
+        const x = randomInt(1, 7);
+        const y = randomInt(1, 7);
+        const dx = randomInt(-3, 3) || 2;
+        const dy = randomInt(-3, 3) || -1;
+        return {
+          title: "Koordinaten und Verschiebung",
+          task: `Der Punkt A(${x}|${y}) wird um (${dx}|${dy}) verschoben. Gib den neuen Punkt A′ an.`,
+          solution: `A′(${x + dx}|${y + dy}), denn x: ${x} + ${dx} = ${x + dx} und y: ${y} + ${dy} = ${y + dy}.`,
+        };
+      },
+    },
+    {
+      id: "natuerlich-rechnen",
+      label: "3. Rechnen mit natürlichen Zahlen",
+      make() {
+        const type = pick(["written", "distribute", "divisibility"]);
+        if (type === "written") {
+          const a = randomInt(120, 999);
+          const b = randomInt(20, 99);
+          return {
+            title: "Schriftlich rechnen",
+            task: `Berechne schriftlich: ${a} · ${b}.`,
+            solution: `${a} · ${b} = ${(a * b).toLocaleString("de-DE")}`,
+          };
+        }
+        if (type === "distribute") {
+          const a = randomInt(3, 12);
+          const b = randomInt(20, 80);
+          const c = randomInt(2, 9);
+          return {
+            title: "Distributivgesetz",
+            task: `Berechne geschickt: ${a} · (${b} + ${c}).`,
+            solution: `${a} · (${b} + ${c}) = ${a} · ${b} + ${a} · ${c} = ${a * b} + ${a * c} = ${a * (b + c)}`,
+          };
+        }
+        const n = randomInt(24, 180);
+        return {
+          title: "Teiler und Teilbarkeit",
+          task: `Prüfe, ob ${n} durch 2, 3, 5 und 10 teilbar ist.`,
+          solution: `Durch 2: ${n % 2 === 0 ? "ja" : "nein"}. Durch 3: ${n % 3 === 0 ? "ja" : "nein"}. Durch 5: ${n % 5 === 0 ? "ja" : "nein"}. Durch 10: ${n % 10 === 0 ? "ja" : "nein"}.`,
+        };
+      },
+    },
+    {
+      id: "flaechen",
+      label: "4. Flächeninhalt und Umfang",
+      make() {
+        const a = randomInt(3, 18);
+        const b = randomInt(2, 12);
+        const c = randomInt(1, 8);
+        return {
+          title: "Rechteck und zusammengesetzte Fläche",
+          task: `Ein Rechteck ist ${a} cm lang und ${b} cm breit. Daneben liegt ein zweites Rechteck mit ${c} cm Länge und ${b} cm Breite. Berechne Gesamtfläche und äußeren Umfang der Gesamtfigur.`,
+          solution: `Fläche: ${a} · ${b} + ${c} · ${b} = ${(a + c) * b} cm². Umfang des großen Rechtecks: 2 · (${a + c} + ${b}) = ${2 * (a + c + b)} cm.`,
+        };
+      },
+    },
+    {
+      id: "volumen",
+      label: "5. Volumen und Oberfläche",
+      make() {
+        const a = randomInt(2, 12);
+        const b = randomInt(2, 9);
+        const c = randomInt(2, 8);
+        return {
+          title: "Quader",
+          task: `Ein Quader ist ${a} cm lang, ${b} cm breit und ${c} cm hoch. Berechne Volumen und Oberfläche.`,
+          solution: `V = ${a} · ${b} · ${c} = ${a * b * c} cm³. O = 2ab + 2ac + 2bc = ${2 * a * b + 2 * a * c + 2 * b * c} cm².`,
+        };
+      },
+    },
+    {
+      id: "brueche-dezimalzahlen",
+      label: "6. Brüche und Dezimalzahlen",
+      make() {
+        const type = pick(["fraction", "decimal", "percent"]);
+        if (type === "fraction") {
+          const d = pick([4, 5, 8, 10, 20]);
+          const n = randomInt(1, d - 1);
+          return {
+            title: "Bruch und Dezimalzahl",
+            task: `Schreibe ${n}/${d} als Dezimalzahl und als Prozentzahl.`,
+            solution: `${n}/${d} = ${(n / d).toLocaleString("de-DE")} = ${n / d * 100} %`,
+          };
+        }
+        if (type === "decimal") {
+          const a = Number((randomInt(10, 99) / 10).toFixed(1));
+          const b = Number((randomInt(10, 99) / 10).toFixed(1));
+          return {
+            title: "Dezimalzahlen vergleichen",
+            task: `Vergleiche die Dezimalzahlen ${a.toLocaleString("de-DE")} und ${b.toLocaleString("de-DE")}. Setze <, > oder = ein.`,
+            solution: `${a.toLocaleString("de-DE")} ${a < b ? "<" : a > b ? ">" : "="} ${b.toLocaleString("de-DE")}`,
+          };
+        }
+        const price = randomInt(20, 120);
+        const percent = pick([10, 20, 25, 50]);
+        return {
+          title: "Prozentschreibweise",
+          task: `Ein Artikel kostet ${price} Euro. ${percent} % davon werden bezahlt. Wie viel ist das?`,
+          solution: `${percent} % = ${percent}/100. ${price} · ${percent}/100 = ${euro(price * percent / 100)}.`,
+        };
+      },
+    },
+  ];
+
+  const select = root.querySelector("#class5Topic");
+  const exampleTitle = root.querySelector("#class5ExampleTitle");
+  const exampleTask = root.querySelector("#class5ExampleTask");
+  const exampleSolution = root.querySelector("#class5ExampleSolution");
+  const examTitle = root.querySelector("#class5ExamTitle");
+  const examTask = root.querySelector("#class5ExamTask");
+  const examSolution = root.querySelector("#class5ExamSolution");
+  const showExample = root.querySelector("#class5ShowExample");
+  const showExam = root.querySelector("#class5ShowExam");
+
+  trainers.forEach((trainer) => {
+    const option = document.createElement("option");
+    option.value = trainer.id;
+    option.textContent = trainer.label;
+    select.append(option);
+  });
+
+  function currentTrainer() {
+    return trainers.find((trainer) => trainer.id === select.value) || trainers[0];
+  }
+
+  function render(target) {
+    const data = currentTrainer().make();
+    if (target === "exam") {
+      examTitle.textContent = data.title;
+      examTask.innerHTML = formatMathHtml(`Prüfungsaufgabe: ${data.task}`);
+      examSolution.innerHTML = formatMathHtml(data.solution);
+      examSolution.hidden = true;
+      showExam.textContent = "Lösung prüfen";
+      return;
+    }
+    exampleTitle.textContent = data.title;
+    exampleTask.innerHTML = formatMathHtml(data.task);
+    exampleSolution.innerHTML = formatMathHtml(data.solution);
+    exampleSolution.hidden = true;
+    showExample.textContent = "Beispiellösung zeigen";
+  }
+
+  select.addEventListener("change", () => {
+    render("example");
+    render("exam");
+  });
+  root.querySelector("#class5NewExample").addEventListener("click", () => render("example"));
+  root.querySelector("#class5NewExam").addEventListener("click", () => render("exam"));
+  showExample.addEventListener("click", () => {
+    exampleSolution.hidden = !exampleSolution.hidden;
+    showExample.textContent = exampleSolution.hidden ? "Beispiellösung zeigen" : "Beispiellösung ausblenden";
+  });
+  showExam.addEventListener("click", () => {
+    examSolution.hidden = !examSolution.hidden;
+    showExam.textContent = examSolution.hidden ? "Lösung prüfen" : "Lösung ausblenden";
+  });
+
+  render("example");
+  render("exam");
+}
+
 enhanceNavigation();
 enhanceStaticFormulas();
+initClass5Trainer();
 initUnitCircle();
 initSineUnitCircle();
 initDerivative();
